@@ -188,6 +188,109 @@
     .callout.blue { border-color: var(--blue); background: var(--blue-soft); }
     .callout.gold { border-color: var(--gold); background: var(--gold-soft); }
 
+    .map-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+    .map-card {
+      position: relative;
+      min-height: 460px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--blue-soft);
+    }
+    .route-map {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 460px;
+    }
+    .map-sea { fill: var(--blue-soft); }
+    .map-land {
+      fill: var(--paper-2);
+      stroke: rgba(37,53,46,.28);
+      stroke-width: 2;
+    }
+    .map-coast {
+      fill: none;
+      stroke: rgba(37,53,46,.16);
+      stroke-width: 1.5;
+    }
+    .map-flight,
+    .map-daytrip {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .map-flight {
+      stroke: var(--terracotta);
+      stroke-width: 4;
+      stroke-dasharray: 10 9;
+    }
+    .map-daytrip {
+      stroke: var(--blue);
+      stroke-width: 3;
+      stroke-dasharray: 4 7;
+    }
+    .map-node circle {
+      fill: var(--terracotta);
+      stroke: var(--paper);
+      stroke-width: 5;
+    }
+    .map-node.france circle { fill: var(--blue); }
+    .map-node text {
+      fill: var(--ink);
+      font: 700 18px/1 var(--serif);
+      paint-order: stroke;
+      stroke: var(--paper);
+      stroke-width: 5;
+      stroke-linejoin: round;
+    }
+    .map-node .minor {
+      font: 700 14px/1 var(--sans);
+    }
+    .map-caption-box {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(245,240,231,.9);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .map-side { display: grid; gap: 14px; }
+    .map-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .map-links a {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.5);
+      font-size: 12px;
+    }
+    .flight-rule {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+    .flight-rule:first-of-type { margin-top: 10px; }
+    .flight-rule strong { color: var(--terracotta); font-size: 13px; }
+
     .section { padding: 64px 0 0; }
     .section-head {
       display: flex;
@@ -352,6 +455,9 @@
       .toolbar { justify-content: center; }
       .hero { min-height: auto; border-radius: 22px; }
       .stats, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .map-layout { grid-template-columns: 1fr; }
+      .map-card, .route-map { min-height: 370px; }
+      .map-caption-box { display: block; }
       .day-card { grid-template-columns: 1fr; }
       .day-side { display: flex; align-items: center; gap: 12px; padding: 16px 20px; }
       .day-date { margin: 0; font-size: 20px; }
@@ -376,6 +482,7 @@
   <nav class="toolbar">
     <div class="toolbar-brand">España × Côte d’Azur</div>
     <div class="toolbar-actions">
+      <a class="button" href="#route-map">地图</a>
       <a class="button" href="#itinerary">逐日行程</a>
       <a class="button" href="#football">西甲</a>
       <a class="button" href="#budget">预算</a>
@@ -408,6 +515,76 @@
         <strong>观赛成功率：</strong>巴塞罗那对奥萨苏纳当前列在 2027 年 5 月 2 日，官网仍显示 “Let Me Know”。行程能保证比赛窗口人在巴塞罗那，但只有收到巴萨官方订单确认后才能保证入场。
       </div>
     </header>
+
+    <section class="section" id="route-map">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">ROUTE MAP</div>
+          <h2>旅程地图与低价交通骨架</h2>
+        </div>
+        <p class="section-note">参照九州行程格式：地图节点对应每日路线；城市名可打开地图。虚线代表飞行，蓝色短虚线代表尼斯基地日游。</p>
+      </div>
+      <div class="map-layout">
+        <article class="map-card" aria-label="巴塞罗那与蔚蓝海岸路线示意地图">
+          <svg class="route-map" viewBox="0 0 900 560" role="img" aria-labelledby="routeMapTitle routeMapDesc">
+            <title id="routeMapTitle">巴塞罗那、尼斯与蔚蓝海岸路线图</title>
+            <desc id="routeMapDesc">巴塞罗那飞往尼斯，并从尼斯往返 Èze、摩纳哥、Antibes 与 Cannes。</desc>
+            <rect class="map-sea" width="900" height="560"/>
+            <path class="map-land" d="M0 0H900V228C842 236 802 258 752 270C679 287 622 269 556 283C485 298 431 337 359 342C287 347 233 321 172 338C109 356 59 389 0 399Z"/>
+            <path class="map-coast" d="M0 399C59 389 109 356 172 338C233 321 287 347 359 342C431 337 485 298 556 283C622 269 679 287 752 270C802 258 842 236 900 228"/>
+            <path class="map-flight" d="M170 337C284 245 414 236 548 283"/>
+            <path class="map-daytrip" d="M548 283C605 263 660 248 724 239"/>
+            <path class="map-daytrip" d="M548 283C503 309 459 328 410 343"/>
+
+            <a class="map-node" href="https://www.google.com/maps/search/?api=1&amp;query=Barcelona" target="_blank" rel="noopener" aria-label="打开巴塞罗那地图">
+              <circle cx="170" cy="337" r="13"/><text x="193" y="328">巴塞罗那</text><text class="minor" x="193" y="350">5.1—5.5 · 4 晚</text>
+            </a>
+            <a class="map-node france" href="https://www.google.com/maps/search/?api=1&amp;query=Nice+France" target="_blank" rel="noopener" aria-label="打开尼斯地图">
+              <circle cx="548" cy="283" r="13"/><text x="521" y="252">尼斯</text><text class="minor" x="506" y="272">5.5—5.9 · 4 晚</text>
+            </a>
+            <a class="map-node france" href="https://www.google.com/maps/search/?api=1&amp;query=Eze+Village+France" target="_blank" rel="noopener" aria-label="打开 Èze 地图">
+              <circle cx="635" cy="258" r="9"/><text class="minor" x="613" y="235">Èze</text>
+            </a>
+            <a class="map-node france" href="https://www.google.com/maps/search/?api=1&amp;query=Monaco" target="_blank" rel="noopener" aria-label="打开摩纳哥地图">
+              <circle cx="724" cy="239" r="9"/><text class="minor" x="741" y="236">摩纳哥</text>
+            </a>
+            <a class="map-node france" href="https://www.google.com/maps/search/?api=1&amp;query=Antibes+France" target="_blank" rel="noopener" aria-label="打开 Antibes 地图">
+              <circle cx="468" cy="320" r="9"/><text class="minor" x="442" y="352">Antibes</text>
+            </a>
+            <a class="map-node france" href="https://www.google.com/maps/search/?api=1&amp;query=Cannes+France" target="_blank" rel="noopener" aria-label="打开 Cannes 地图">
+              <circle cx="410" cy="343" r="9"/><text class="minor" x="375" y="376">Cannes</text>
+            </a>
+          </svg>
+          <div class="map-caption-box">
+            <span>主线：上海 → 巴塞罗那 → 尼斯 → 上海</span>
+            <span>2 个住宿基地 · 6 个目的地</span>
+          </div>
+        </article>
+
+        <div class="map-side">
+          <article class="card">
+            <span class="label">航班筛选口径</span>
+            <div class="big">允许一次中转，总成本优先</div>
+            <div class="flight-rule"><strong>去程</strong><span>4 月 30 日离沪，目标 5 月 1 日 14:00 前抵达 BCN；最多 1 次中转、总时长不超过 22 小时。</span></div>
+            <div class="flight-rule"><strong>中段</strong><span>5 月 5 日 BCN→NCE 优先直飞。该段很短，不为小额差价增加中转。</span></div>
+            <div class="flight-rule"><strong>回程</strong><span>5 月 9 日 NCE→上海允许 1 次中转，总时长不超过 24 小时；同步比较 MRS 出发。</span></div>
+            <div class="flight-rule"><strong>总成本</strong><span>票价＋托运行李＋选座＋跨机场／火车＋被迫住宿；自转机省不到 ¥1,000/人则不选。</span></div>
+          </article>
+          <article class="card">
+            <h3>三条可直接打开的分段地图</h3>
+            <p class="section-note">打开后可按实时营业与交通调整，不依赖页面内的示意比例。</p>
+            <div class="map-links">
+              <a href="https://www.google.com/maps/dir/?api=1&amp;origin=Sagrada+Familia&amp;destination=Casa+Batllo&amp;waypoints=Hospital+de+Sant+Pau%7CPark+Guell" target="_blank" rel="noopener">巴塞罗那高迪线</a>
+              <a href="https://www.google.com/maps/dir/?api=1&amp;origin=Nice+Ville&amp;destination=Monaco&amp;waypoints=Eze+Village" target="_blank" rel="noopener">Èze＋摩纳哥</a>
+              <a href="https://www.google.com/maps/dir/?api=1&amp;origin=Nice+Ville&amp;destination=Cannes&amp;waypoints=Antibes" target="_blank" rel="noopener">Antibes＋Cannes</a>
+            </div>
+          </article>
+          <div class="callout blue">
+            <strong>实时票价状态：</strong>当前机票数据源尚未返回 2027 五一档可售结果，页面只写筛选规则，不把预算价伪装成实时报价。
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="section" id="itinerary">
       <div class="section-head">
@@ -462,20 +639,20 @@
       </div>
       <div class="grid-2">
         <article class="card">
-          <h3>开口票搜索</h3>
+          <h3>低价开口票搜索</h3>
           <ul class="plain-list">
-            <li>去程：PVG → BCN，目标 5 月 1 日中午前落地。</li>
-            <li>中段：5 月 5 日 BCN → NCE，优先 Vueling 直飞。</li>
-            <li>回程：5 月 9 日 NCE → PVG，通常需一次中转。</li>
-            <li>如果 5 月 9 日必须人在上海，应 5 月 8 日离开尼斯。</li>
+            <li>国际多程：SHA/PVG → BCN（4 月 30 日）；NCE 或 MRS → SHA/PVG（5 月 9 日）。</li>
+            <li>允许一次中转，优先联程且行李直挂；不限定航司联盟。</li>
+            <li>中段：5 月 5 日 BCN → NCE 单独购买直飞，比较含托运行李总价。</li>
+            <li>若 MRS 回程只便宜少量，计入尼斯—马赛火车与时间后仍选 NCE。</li>
           </ul>
         </article>
         <article class="card">
           <h3>避免错过比赛</h3>
           <ul class="plain-list">
-            <li>最稳：4 月 30 日深夜离沪、5 月 1 日抵达。</li>
-            <li>严格 5 月 1 日起飞时，需接受错过 5 月 1 日改期场的残余风险。</li>
-            <li>国际票与欧洲段分开出票时，误机互不保护。</li>
+            <li>最稳：4 月 30 日离沪，5 月 1 日 14:00 前抵达 BCN。</li>
+            <li>去程总时长上限 22 小时；过夜转机和自转机需明显便宜才采用。</li>
+            <li>上海—欧洲国际多程与 BCN—NCE 分开出票，至少相隔一整晚。</li>
           </ul>
         </article>
         <article class="card">
@@ -600,20 +777,24 @@
         n: 1, date: "05.01", city: "巴塞罗那", country: "spain", theme: "抵达与赛事弹性",
         route: "BCN → Eixample → 哥特区 / El Born",
         rows: [
-          ["上午 / 中午", "抵达巴塞罗那，入境取行李", "目标是在中午前落地；若比赛改到当晚，仍有缓冲。"],
-          ["下午", "入住 Eixample 并休息", "Sant Antoni 或 Gràcia 南侧也可。"],
-          ["傍晚", "哥特区外围与 El Born 轻量散步", "不购买固定时段门票，保留比赛弹性。"]
+          ["4/30 18:00—24:00", "上海出发，搭一次中转经济舱", "低价优先，但总时长控制在 22 小时内；行李尽量直挂。"],
+          ["5/1 10:00—14:00", "目标抵达 BCN、入境取行李", "14:00 是保护巴萨比赛改期的建议最晚落地时间。"],
+          ["14:00—15:30", "Aerobús / Rodalies 进城并入住", "住 Eixample；两人含大箱时比较机场交通总价。"],
+          ["16:30—19:00", "哥特区外围与 El Born 轻量散步", "航班晚点则整段删除，不购买固定时段门票。"],
+          ["19:30", "酒店附近晚餐、提前休息", "不跨区追餐厅，为次日观赛留体力。"]
         ],
-        tip: "最稳是 4 月 30 日深夜从上海出发。若 5 月 1 日才起飞，需接受错过改期场的残余风险。"
+        tip: "机票排序按“含行李总价”而不是裸票价；自转机与机场过夜只有在每人至少省 ¥1,000 时才考虑。"
       },
       {
         n: 2, date: "05.02", city: "巴塞罗那", country: "spain", theme: "巴萨主场西甲",
         route: "Passeig de Gràcia → 午休 → Spotify Camp Nou",
         rows: [
-          ["上午", "格拉西亚大道建筑外观", "只安排可随时结束的步行路线。"],
-          ["中午", "提前正餐并回酒店", "避免临开球还在排队吃饭。"],
+          ["09:00—10:00", "早餐并复核开球、球票与入场口", "把电子票、护照信息和离线截图准备好。"],
+          ["10:00—12:00", "格拉西亚大道建筑外观", "米拉之家、巴特罗之家只看外观，路线可随时结束。"],
+          ["12:15—13:30", "提前吃正餐", "避免临开球还在排队；不喝过量酒。"],
+          ["13:30 起", "回酒店休息与换装", "具体时长按最终开球倒推。"],
           ["开球前 2.5h", "前往 Spotify Camp Nou", "巴塞罗那 vs 奥萨苏纳；只用官方票务。"],
-          ["赛后", "地铁返回市区", "不预约不可迟到的晚餐。"]
+          ["赛后 0—1.5h", "按人流管制搭地铁返回", "不预约不可迟到的晚餐，备好简餐。"]
         ],
         tip: "官方当前显示 5 月 2 日，但最终比赛日与开球时间仍可能调整；球场减容阶段公众票可能偏少。"
       },
@@ -621,10 +802,12 @@
         n: 3, date: "05.03", city: "巴塞罗那", country: "spain", theme: "老城、Born 与海滨",
         route: "哥特区 → 巴塞罗那大教堂 → El Born → Barceloneta",
         rows: [
-          ["上午", "哥特区与巴塞罗那大教堂", "国王广场、窄巷与历史街区。"],
-          ["13:00", "El Born 午餐", "毕加索博物馆等比赛确定后再订。"],
-          ["15:00", "城堡公园与 Barceloneta", "若当天改为比赛日，下午整体取消。"],
-          ["晚间", "Eixample 或 El Born", "按体力决定。"]
+          ["09:00—11:00", "哥特区、国王广场与历史街巷", "清晨先走热门窄巷，避开午后人流。"],
+          ["11:00—12:15", "巴塞罗那大教堂", "是否登顶按现场排队决定。"],
+          ["12:30—14:00", "El Born 午餐", "毕加索博物馆等比赛时间确认后再订。"],
+          ["14:15—16:00", "城堡公园", "平缓休息段，不与博物馆叠加。"],
+          ["16:15—18:30", "Barceloneta 海滨", "若比赛改到周一，下午整体取消。"],
+          ["19:00", "Eixample 或 El Born 晚餐", "按体力就近选择。"]
         ],
         tip: "这是无硬预约的弹性日；若比赛改到周一，删除海滨段并提前返回酒店。"
       },
@@ -632,10 +815,12 @@
         n: 4, date: "05.04", city: "巴塞罗那", country: "spain", theme: "高迪核心日",
         route: "圣家堂 → 圣保罗医院 → Gràcia → 古埃尔公园",
         rows: [
-          ["09:00", "圣家堂", "预约第一批时段，减少排队并留出全天余量。"],
-          ["11:30", "圣十字圣保罗医院", "可入内或只看建筑外观。"],
-          ["13:30", "Gràcia 午餐", "为下午公园补充体力。"],
-          ["15:30", "古埃尔公园", "傍晚回格拉西亚大道，只选一座现代主义建筑入内。"]
+          ["08:30", "抵达圣家堂安检入口", "09:00 第一批时段，提前 30 分钟到场。"],
+          ["09:00—11:00", "圣家堂", "塔楼是否加入以官方票型和天气为准。"],
+          ["11:20—12:40", "圣十字圣保罗医院", "可入内或只看建筑外观。"],
+          ["13:00—14:20", "Gràcia 午餐与休息", "不要压缩两张时段票之间的缓冲。"],
+          ["15:30—17:30", "古埃尔公园", "按预约入口入园，预留上坡时间。"],
+          ["18:30—20:00", "格拉西亚大道", "巴特罗之家或米拉之家只选一座入内。"]
         ],
         tip: "圣家堂与古埃尔公园之间至少留 3 小时；这是巴塞罗那唯一的双时段票日。"
       },
@@ -643,10 +828,11 @@
         n: 5, date: "05.05", city: "巴塞罗那 → 尼斯", country: "france", theme: "法西转场",
         route: "酒店 → BCN → NCE → Jean Médecin",
         rows: [
-          ["上午", "退房、前往机场", "欧洲段建议起飞前 2 小时到 BCN。"],
-          ["午后", "BCN—NCE 直飞", "Vueling 当前经营该航线，计划飞行约 1 小时 25 分。"],
-          ["傍晚", "L2 电车进城并入住", "住 Musiciens / Thiers / Jean Médecin。"],
-          ["晚间", "英国人散步大道与老城", "只做低强度散步。"]
+          ["08:30—10:30", "早餐、整理与退房", "航班未锁定前不安排付费景点。"],
+          ["目标起飞前 2h", "抵达 BCN Terminal 1", "廉航托运行李与安检留足时间。"],
+          ["14:00—17:30", "优先选择此窗口的 BCN—NCE 直飞", "飞行约 1 小时 25 分；不为小额差价增加中转。"],
+          ["落地后 0—1.5h", "搭 L2 电车进城并入住", "住 Musiciens / Thiers / Jean Médecin。"],
+          ["19:30—21:00", "英国人散步大道与老城晚餐", "只做低强度散步。"]
         ],
         tip: "欧洲段若与国际票分开购买，延误和误机互不保护。"
       },
@@ -654,10 +840,13 @@
         n: 6, date: "05.06", city: "Èze / 摩纳哥", country: "france", theme: "山城与城邦",
         route: "尼斯 → Èze Village → Monaco → 尼斯",
         rows: [
-          ["上午", "公交前往 Èze Village", "花园、石巷和海岸观景。"],
-          ["中午", "Èze 午餐", "假日餐厅建议预约。"],
-          ["下午", "摩纳哥", "王宫岩、港口与蒙特卡洛外围，以户外步行为主。"],
-          ["傍晚", "返回尼斯", "按法国假日班次预留等待。"]
+          ["07:30—08:15", "早餐并前往公交站", "按假日班次预留等车，不从 Èze-sur-Mer 徒步硬爬上山。"],
+          ["08:30—09:20", "公交前往 Èze Village", "优先直达山城的班次。"],
+          ["09:20—12:00", "Èze 石巷、异域花园与观景台", "先游花园，避开午后拥挤。"],
+          ["12:00—13:10", "Èze 午餐", "假日热门餐厅建议预约。"],
+          ["13:10—14:30", "转往摩纳哥", "按当天班次选公交或返回海岸线换 TER。"],
+          ["14:30—18:00", "摩纳哥王宫岩、港口与蒙特卡洛外围", "以户外步行为主，不强塞海洋馆。"],
+          ["18:15—19:00", "TER 返回尼斯", "避开最后一班风险。"]
         ],
         tip: "当天为耶稣升天节；Èze 与摩纳哥之间按实际班次选择公交或返回海岸线换 TER。"
       },
@@ -666,9 +855,11 @@
         route: "Cours Saleya → 老城 → 城堡山 → 博物馆",
         rows: [
           ["08:30", "Cours Saleya 市场", "早餐与鲜花市场。"],
-          ["10:00", "尼斯老城", "主教座堂、窄巷与小店。"],
-          ["14:00", "城堡山", "步行或电梯上山，留出海岸观景时间。"],
-          ["16:30", "夏加尔 / 马蒂斯二选一", "不要在一天内追两个博物馆。"]
+          ["10:00—12:00", "尼斯老城", "主教座堂、窄巷与小店。"],
+          ["12:00—13:30", "Socca 或尼斯菜午餐", "不安排过长正式餐。"],
+          ["14:00—16:00", "城堡山", "步行或电梯上山，留出海岸观景时间。"],
+          ["16:30—18:00", "夏加尔 / 马蒂斯二选一", "不要在一天内追两个博物馆。"],
+          ["19:00", "英国人散步大道看日落", "晚餐回老城或 Jean Médecin。"]
         ],
         tip: "本日是尼斯核心城市日，雨天也可用博物馆延长替代户外。"
       },
@@ -676,10 +867,12 @@
         n: 8, date: "05.08", city: "Antibes / Cannes", country: "france", theme: "双城海岸线",
         route: "Nice-Ville → Antibes → Cannes → Nice",
         rows: [
-          ["上午", "TER 至 Antibes", "老城城墙、港口与海滨，以户外路线为主。"],
-          ["中午", "Antibes 午餐", "不安排过长正式餐。"],
-          ["下午", "TER 至 Cannes", "约 8—12 分钟；走 Le Suquet、影节宫外观与海滨大道。"],
-          ["晚间", "返回尼斯、最后晚餐", "整理返程文件。"]
+          ["08:15—09:00", "Nice-Ville 搭 TER 至 Antibes", "胜利日按假日班次，出发前一周复核。"],
+          ["09:00—12:00", "Antibes 老城城墙、港口与海滨", "以户外路线为主，博物馆不设为硬行程。"],
+          ["12:00—13:15", "Antibes 午餐", "控制在 75 分钟内。"],
+          ["13:30—14:00", "TER 前往 Cannes", "车程约 8—12 分钟，加候车缓冲。"],
+          ["14:00—18:00", "Le Suquet、影节宫外观与海滨大道", "商店若因假日关闭，不影响主线。"],
+          ["18:15—19:00", "TER 返回尼斯", "最后晚餐并整理返程文件。"]
         ],
         tip: "法国胜利日按假日班次执行，不把博物馆与购物设为硬行程。"
       },
@@ -687,9 +880,11 @@
         n: 9, date: "05.09", city: "尼斯 → 上海", country: "france", theme: "返程",
         route: "酒店 → NCE → 中转枢纽 → 上海",
         rows: [
-          ["上午", "早餐、退房", "根据航班决定是否还能短距离散步。"],
-          ["起飞前 3h", "L2 前往 NCE", "国际中转票提前到机场。"],
-          ["当日", "尼斯起飞", "预计 5 月 10 日抵达上海。"]
+          ["T−4h", "退房并确认两段登机牌与行李直挂", "若从 MRS 出发，需额外倒推尼斯至马赛铁路与机场接驳。"],
+          ["T−3h", "搭 L2 前往 NCE", "国际中转票按首段国际值机要求到场。"],
+          ["T−2h", "完成托运、安检与出境手续", "不安排机场外最后购物。"],
+          ["当日", "尼斯起飞，经 1 个枢纽转机", "中转 2—6 小时、总时长不超过 24 小时。"],
+          ["5/10", "预计抵达上海", "分开出票时增加至少 5 小时中转，不追极限低价。"]
         ],
         tip: "若必须 5 月 9 日已在上海，应改为 5 月 8 日离开尼斯。"
       }
@@ -697,7 +892,7 @@
 
     const tasks = [
       ["passport", "检查两人护照有效期与空白页", "现在"],
-      ["flight", "搜索 PVG→BCN / NCE→PVG 开口票，优先可退改", "现在起"],
+      ["flight", "搜索 PVG/SHA→BCN、NCE/MRS→上海的一次中转低价组合", "现在起"],
       ["hotels", "锁定巴塞罗那和尼斯各 4 晚可取消酒店", "机票前后"],
       ["barca", "注册 Barça 账号并开启比赛提醒", "现在"],
       ["visa", "准备西班牙申根签证", "2027 年 1—2 月"],
